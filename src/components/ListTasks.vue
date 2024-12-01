@@ -26,7 +26,11 @@
             <v-list>
               <v-list-item>
                 <v-list-item-title @click="toggle(i)">Editar</v-list-item-title>
-                <v-list-item-title>Deletar</v-list-item-title>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-title @click="toggle(i, 'delete')"
+                  >Deletar</v-list-item-title
+                >
               </v-list-item>
             </v-list>
           </v-menu>
@@ -34,9 +38,14 @@
       </v-list-item>
     </v-list>
     <DialogTask
-      @toggle="toggle"
+      @toggle="toggle(null)"
       :task="tasks[indexTaskSelected]"
       :dialog="showDialogTask"
+    />
+    <DialogDelete
+      @toggle="toggle(null, 'delete')"
+      @deleteTask="deleteTask"
+      :dialog="showDialogDelete"
     />
   </div>
 </template>
@@ -44,17 +53,35 @@
 <script setup>
 import { ref, defineProps } from "vue";
 import DialogTask from "@/components/DialogTask.vue";
+import DialogDelete from "@/components/DialogDelete.vue";
 
 const props = defineProps({
   tasks: Object,
 });
 const indexTaskSelected = ref(0);
 const showDialogTask = ref(false);
+const showDialogDelete = ref(false);
 
-const toggle = (i) => {
+const toggle = (i, type = "edit") => {
   if (i != null) {
     indexTaskSelected.value = i;
   }
-  showDialogTask.value = !showDialogTask.value;
+  switch (type) {
+    case "edit":
+      showDialogTask.value = !showDialogTask.value;
+      break;
+    case "delete":
+      showDialogDelete.value = !showDialogDelete.value;
+      break;
+    default:
+      showDialogTask.value = false;
+      showDialogDelete.value = false;
+      break;
+  }
+};
+
+const deleteTask = () => {
+  props.tasks.splice(indexTaskSelected.value, 1);
+  toggle(null, "delete");
 };
 </script>
