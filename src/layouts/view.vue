@@ -38,8 +38,8 @@
 import { ref } from "vue";
 
 const menuItems = [
-  { text: "Home", icon: "mdi-folder", to: "/" },
-  { text: "About", icon: "mdi-account-multiple", to: "/about" },
+  { text: "Tasks", icon: "mdi-list-status", to: "/" },
+  { text: "About", icon: "mdi-information", to: "/about" },
 ];
 
 const drawer = ref(null);

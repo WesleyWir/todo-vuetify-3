@@ -8,7 +8,6 @@
         </v-card-text>
         <template v-slot:actions>
           <v-spacer></v-spacer>
-
           <v-btn @click="$emit('toggle')"> Confirmar </v-btn>
         </template>
       </v-card>

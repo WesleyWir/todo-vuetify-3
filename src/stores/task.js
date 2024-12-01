@@ -3,16 +3,7 @@ import { defineStore } from 'pinia'
 
 export const useTaskStore = defineStore('task', {
     state: () => ({
-        tasks: [
-            {
-                title: 'Task 1',
-                description: 'Description 1',
-            },
-            {
-                title: 'Task 2',
-                description: 'Description 1',
-            },
-        ],
+        tasks: [],
         titleTaskCreating: '',
         showDialogTask: false,
         showDialogDelete: false,
@@ -29,6 +20,10 @@ export const useTaskStore = defineStore('task', {
         deleteTask() {
             this.tasks.splice(this.indexTaskSelected, 1);
             this.toggle(null, "delete");
+            this.saveLocalData();
+        },
+        clearAll() {
+            this.tasks = [];
             this.saveLocalData();
         },
         toggle(i, type = "edit") {

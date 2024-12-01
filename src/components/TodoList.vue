@@ -1,29 +1,25 @@
 <template>
-  <div>
-    <v-text-field
-      clearable
-      label="Add Task"
-      :rules="rules"
-      v-model="taskStore.titleTaskCreating"
-      @keyup.enter="taskStore.addTask"
-    ></v-text-field>
+  <v-container>
+    <ClearTasks />
+    <form @submit.prevent="taskStore.addTask">
+      <v-text-field
+        required
+        clearable
+        label="Add Task"
+        v-model="taskStore.titleTaskCreating"
+      />
+    </form>
     <ListTasks />
-  </div>
+  </v-container>
 </template>
 
 <script setup>
 import { onMounted } from "vue";
 import ListTasks from "./ListTasks.vue";
+import ClearTasks from "./ClearTasks.vue";
 import { useTaskStore } from "@/stores/task";
 
 const taskStore = useTaskStore();
-const rules = [
-  (value) => {
-    if (value) return true;
-    return "Task name is required";
-  },
-];
-
 onMounted(() => {
   taskStore.getTasks();
 });

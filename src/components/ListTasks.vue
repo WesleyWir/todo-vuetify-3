@@ -5,7 +5,7 @@
       lines="three"
       select-strategy="leaf"
     >
-      <v-list-subheader>General</v-list-subheader>
+      <v-list-subheader><v-icon icon="mdi-playlist-check"></v-icon>Tasks List</v-list-subheader>
       <v-list-item
         v-for="(task, i) in taskStore.tasks"
         :key="i"
