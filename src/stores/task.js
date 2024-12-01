@@ -20,8 +20,9 @@ export const useTaskStore = defineStore('task', {
     }),
     actions: {
         addTask() {
+            if (!this.titleTaskCreating) return;
             const title = this.titleTaskCreating;
-            this.tasks.push({ title });
+            this.tasks.push({ title, done: false });
             this.titleTaskCreating = '';
             this.saveLocalData();
         },
@@ -51,11 +52,15 @@ export const useTaskStore = defineStore('task', {
         saveLocalData() {
             localStorage.setItem('tasks', JSON.stringify(this.tasks));
         },
-        getTasks(){
+        getTasks() {
             let items = localStorage.getItem('tasks');
-            if(items){
+            if (items) {
                 this.tasks = JSON.parse(items);
             }
+        },
+        toggleDoneTask(index) {
+            this.tasks[index].done = !this.tasks[index].done;
+            this.saveLocalData();
         }
     }
 })
