@@ -7,7 +7,7 @@
     >
       <v-list-subheader>General</v-list-subheader>
       <v-list-item
-        v-for="(task, i) in props.tasks"
+        v-for="(task, i) in taskStore.tasks"
         :key="i"
         :subtitle="task.description"
         :title="task.title"
@@ -25,10 +25,10 @@
             </template>
             <v-list>
               <v-list-item>
-                <v-list-item-title @click="toggle(i)">Editar</v-list-item-title>
+                <v-list-item-title @click="taskStore.toggle(i)">Editar</v-list-item-title>
               </v-list-item>
               <v-list-item>
-                <v-list-item-title @click="toggle(i, 'delete')"
+                <v-list-item-title @click="taskStore.toggle(i, 'delete')"
                   >Deletar</v-list-item-title
                 >
               </v-list-item>
@@ -38,50 +38,24 @@
       </v-list-item>
     </v-list>
     <DialogTask
-      @toggle="toggle(null)"
-      :task="tasks[indexTaskSelected]"
-      :dialog="showDialogTask"
+      @toggle="taskStore.toggle(null)"
+      :task="taskStore.tasks[indexTaskSelected]"
+      :dialog="taskStore.showDialogTask"
     />
     <DialogDelete
-      @toggle="toggle(null, 'delete')"
-      @deleteTask="deleteTask"
-      :dialog="showDialogDelete"
+      @toggle="taskStore.toggle(null, 'delete')"
+      @delete="taskStore.deleteTask"
+      :dialog="taskStore.showDialogDelete"
     />
   </div>
 </template>
 
 <script setup>
-import { ref, defineProps } from "vue";
+import { ref } from "vue";
 import DialogTask from "@/components/DialogTask.vue";
 import DialogDelete from "@/components/DialogDelete.vue";
-
-const props = defineProps({
-  tasks: Object,
-});
+import { useTaskStore } from '@/stores/task';
+const taskStore = useTaskStore();
 const indexTaskSelected = ref(0);
 const showDialogTask = ref(false);
-const showDialogDelete = ref(false);
-
-const toggle = (i, type = "edit") => {
-  if (i != null) {
-    indexTaskSelected.value = i;
-  }
-  switch (type) {
-    case "edit":
-      showDialogTask.value = !showDialogTask.value;
-      break;
-    case "delete":
-      showDialogDelete.value = !showDialogDelete.value;
-      break;
-    default:
-      showDialogTask.value = false;
-      showDialogDelete.value = false;
-      break;
-  }
-};
-
-const deleteTask = () => {
-  props.tasks.splice(indexTaskSelected.value, 1);
-  toggle(null, "delete");
-};
 </script>

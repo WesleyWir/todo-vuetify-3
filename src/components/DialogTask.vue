@@ -1,6 +1,6 @@
 <template>
   <div class="text-center pa-4">
-    <v-dialog v-model="props.dialog" max-width="400" persistent>
+    <v-dialog v-model="taskStore.showDialogTask" max-width="400" persistent>
       <v-card>
         <v-card-text>
           <v-text-field v-model="props.task.title" label="Title" />
@@ -19,8 +19,9 @@
 
 <script setup>
 import { defineProps } from "vue";
+import { useTaskStore } from "@/stores/task";
+const taskStore = useTaskStore();
 const props = defineProps({
-  dialog: Boolean,
   task: Object,
 });
 </script>
